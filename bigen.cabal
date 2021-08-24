@@ -1,0 +1,90 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: b0b97dee0ee4392da45ee0cf52c45003e9a9ee94065bc936ff64bc50359638e2
+
+name:           bigen
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/bigen#readme>
+homepage:       https://github.com/githubuser/bigen#readme
+bug-reports:    https://github.com/githubuser/bigen/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/bigen
+
+library
+  exposed-modules:
+      BiGen
+      CheckGen
+      ConstraintGen
+      CtxGen
+      Examples
+      ExprExample
+      HellGen
+      Profmonad
+      QCGen
+      RLGen
+      SeqGen
+  other-modules:
+      Paths_bigen
+  hs-source-dirs:
+      src
+  build-depends:
+      QuickCheck
+    , QuickCheck-GenT
+    , base >=4.7 && <5
+    , containers
+    , generic-arbitrary
+    , logict
+    , mtl
+  default-language: Haskell2010
+
+executable bigen-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_bigen
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , QuickCheck-GenT
+    , base >=4.7 && <5
+    , bigen
+    , containers
+    , generic-arbitrary
+    , logict
+    , mtl
+  default-language: Haskell2010
+
+test-suite bigen-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_bigen
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , QuickCheck-GenT
+    , base >=4.7 && <5
+    , bigen
+    , containers
+    , generic-arbitrary
+    , logict
+    , mtl
+  default-language: Haskell2010
