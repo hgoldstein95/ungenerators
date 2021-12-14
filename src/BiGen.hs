@@ -12,7 +12,7 @@ import Control.Monad (ap)
 import Profmonad (Profmonad, Profunctor (..))
 import qualified Test.QuickCheck as QC
 
-class Profmonad g => BiGen g where
+class BiGen g where
   select :: Eq a => String -> [g a a] -> g a a
   uniform :: [a] -> g a a
 

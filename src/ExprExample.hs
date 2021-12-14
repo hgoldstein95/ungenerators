@@ -1,10 +1,10 @@
 {-# LANGUAGE LambdaCase #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module ExprExample where
 
 import BiGen (BiGen (..))
-import CheckGen
-import Profmonad (Iso, (<$$>), (<**>))
+import Profmonad (Iso, Profmonad, (<$$>), (<**>))
 import Prelude hiding (div)
 
 data Expr
@@ -118,7 +118,7 @@ more =
       _ -> Nothing
   )
 
-genExpr :: BiGen g => Int -> g Expr Expr
+genExpr :: (BiGen g, Profmonad g) => Int -> g Expr Expr
 genExpr = \case
   0 -> term <$$> genTerm 0
   n ->
@@ -129,7 +129,7 @@ genExpr = \case
         minus <$$> genExpr (n - 1) <**> genTerm (n - 1)
       ]
 
-genTerm :: BiGen g => Int -> g Term Term
+genTerm :: (BiGen g, Profmonad g) => Int -> g Term Term
 genTerm = \case
   0 -> factor <$$> genFactor 0
   n ->
@@ -140,7 +140,7 @@ genTerm = \case
         div <$$> genTerm (n - 1) <**> genFactor (n - 1)
       ]
 
-genFactor :: BiGen g => Int -> g Factor Factor
+genFactor :: (BiGen g, Profmonad g) => Int -> g Factor Factor
 genFactor = \case
   0 -> digits <$$> genDigits 0
   n ->
@@ -152,7 +152,7 @@ genFactor = \case
         parens <$$> genExpr (n - 1)
       ]
 
-genDigits :: BiGen g => Int -> g Digits Digits
+genDigits :: (BiGen g, Profmonad g) => Int -> g Digits Digits
 genDigits = \case
   0 -> digit <$$> int
   n ->

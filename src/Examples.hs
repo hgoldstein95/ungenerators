@@ -11,7 +11,7 @@ import CtxGen (CtxGen (..))
 import Data.Maybe (fromJust)
 import GHC.Generics (Generic)
 import HellGen
-import Profmonad (Iso, Profunctor (..), (<$$>), (<**>))
+import Profmonad (Iso, Profmonad, Profunctor (..), (<$$>), (<**>))
 import RLGen
 import SeqGen (SeqGen, wBRT)
 import Test.QuickCheck (Arbitrary (..), elements, genericShrink, oneof, quickCheck)
@@ -41,7 +41,7 @@ nodeRight :: Tree -> Maybe Tree
 nodeRight (Node _ _ r) = Just r
 nodeRight _ = Nothing
 
-genTree :: forall g. BiGen g => g Tree Tree
+genTree :: forall g. (BiGen g, Profmonad g) => g Tree Tree
 genTree = aux 4
   where
     aux 0 = pure Leaf
@@ -57,7 +57,7 @@ genTree = aux 4
         ]
     genInt = select "Int" [pure x | x <- [0 .. 10]]
 
-badGenTree :: forall g. BiGen g => g Tree Tree
+badGenTree :: forall g. (BiGen g, Profmonad g) => g Tree Tree
 badGenTree = aux 4
   where
     aux 0 = pure Leaf
