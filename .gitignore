@@ -7,3 +7,4 @@
 *.pdf
 *.out
 *.synctex.gz
+.stack-work/
