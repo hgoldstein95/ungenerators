@@ -4,19 +4,19 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module RLGen where
 
 import BiGen (Choice)
 import Control.Applicative (Alternative (..))
 import Control.Arrow (first)
-import Control.Monad (MonadPlus, ap, msum, (<=<), (>=>))
+import Control.Monad (MonadPlus, ap, msum, (>=>))
 import CtxGen (CtxGen (..))
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe (fromJust, maybeToList)
+import Data.Maybe (fromJust)
 import Profmonad (Profmonad, Profunctor (..))
-import SeqGen (SeqUnGen (runSeqUnGen))
 import qualified Test.QuickCheck as QC
 
 type RLModel c = Map (String, c) [Int]
@@ -82,7 +82,7 @@ instance Profmonad (RLUnGen c)
 instance Ord c => CtxGen c (RLUnGen c) where
   selectCtx s c = msum . zipWith recordChoice [0 ..]
     where
-      tell x = RLUnGen $ \b -> Just ((), x)
+      tell x = RLUnGen $ \_ -> Just ((), x)
       recordChoice i d = do
         tell [(c, (s, i))]
         x <- d

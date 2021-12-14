@@ -5,12 +5,12 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module BiGen where
 
 import Control.Monad (ap)
 import Profmonad (Profmonad, Profunctor (..))
-import qualified Test.QuickCheck as QC
 
 class BiGen g where
   select :: Eq a => String -> [g a a] -> g a a

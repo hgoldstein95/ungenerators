@@ -1,10 +1,11 @@
 {-# LANGUAGE LambdaCase #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module HellGen where
 
-import BiGen (BiGen (..), Choice)
+import BiGen (BiGen (..))
 import Control.Applicative (Alternative (..))
-import Control.Arrow (Arrow (second), first)
+import Control.Arrow (first)
 import Control.Monad (MonadPlus, ap, msum, (>=>))
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -41,7 +42,7 @@ instance Profunctor HellGen where
 instance Profmonad HellGen
 
 instance BiGen HellGen where
-  uniform gs = HellGen $ \m -> QC.elements gs
+  uniform gs = HellGen $ \_ -> QC.elements gs
   select sid gs = HellGen $ \m ->
     QC.frequency (zip (m Map.! sid) ((`runHellGen` m) <$> gs))
 
@@ -83,8 +84,8 @@ instance Profmonad HellUnGen
 instance BiGen HellUnGen where
   select s gs = msum . zipWith recordChoice [0 ..] $ gs
     where
-      emit (s, i) =
-        HellUnGen $ \b ->
+      emit (_, i) =
+        HellUnGen $ \_ ->
           Just ((), Map.singleton s [if j == i then 1 else 0 | j <- [0 .. length gs - 1]])
       recordChoice i d = do
         x <- d

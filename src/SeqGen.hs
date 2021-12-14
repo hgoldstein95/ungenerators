@@ -1,15 +1,15 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE RankNTypes #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module SeqGen where
 
-import BiGen (BG, BiGen (..), Choice)
+import BiGen (BiGen (..), Choice)
 import Control.Applicative (Alternative (..))
 import Control.Arrow (first)
-import Control.Monad (MonadPlus, ap, guard, msum, (>=>))
+import Control.Monad (MonadPlus, ap, msum, (>=>))
 import Profmonad (Profmonad, Profunctor (..))
 import Test.QuickCheck (Arbitrary (..), Property, discard, forAll, (===))
-import qualified Test.QuickCheck as QC
 
 ----------------------------
 -- SeqGen
@@ -85,7 +85,7 @@ instance Profmonad SeqUnGen
 instance BiGen SeqUnGen where
   select s = msum . zipWith recordChoice [0 ..]
     where
-      tell x = SeqUnGen $ \b -> Just ((), x)
+      tell x = SeqUnGen $ \_ -> Just ((), x)
       recordChoice i d = do
         tell [(s, i)]
         x <- d

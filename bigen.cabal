@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b0b97dee0ee4392da45ee0cf52c45003e9a9ee94065bc936ff64bc50359638e2
+-- hash: 30c09bc781b72ce67d0c582608ce88dfeee1a4a4343fa853d9c38b4f3b44395e
 
 name:           bigen
 version:        0.1.0.0
@@ -29,7 +29,6 @@ library
   exposed-modules:
       BiGen
       CheckGen
-      ConstraintGen
       CtxGen
       Examples
       ExprExample
@@ -58,7 +57,7 @@ executable bigen-exe
       Paths_bigen
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall
   build-depends:
       QuickCheck
     , QuickCheck-GenT

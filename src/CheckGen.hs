@@ -3,19 +3,17 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module CheckGen where
 
-import BiGen (BiGen (..), Choice)
+import BiGen (BiGen (..))
 import Control.Applicative (Alternative (..))
-import Control.Arrow (first)
-import Control.Monad (MonadPlus (mplus), ap, guard, msum, (>=>))
-import Control.Monad.Logic (Logic, MonadLogic (interleave, (>>-)), observeAll)
-import Data.Maybe (isJust, isNothing, listToMaybe, maybeToList)
-import Data.Set (Set)
+import Control.Monad (MonadPlus, ap, msum, (>=>))
+import Control.Monad.Logic (Logic, MonadLogic ((>>-)), observeAll)
 import Profmonad (Profmonad, Profunctor (..))
 import QuickCheck.GenT (MonadGen (..), oneof)
-import Test.QuickCheck (Arbitrary (arbitrary), Gen, Property, Testable (property), discard, forAll, (===), (==>))
+import Test.QuickCheck (Gen, Property, forAll, (===))
 
 ----------------------------
 -- PureGen
@@ -48,7 +46,7 @@ instance Profmonad PureGen
 
 instance BiGen PureGen where
   uniform = msum . map pure
-  select sid gs = PureGen $ \b ->
+  select _ gs = PureGen $ \b ->
     msum [if a == Just b then a else Nothing | g <- gs, let a = runPureGen g b]
 
 purify :: (forall g. BiGen g => g u v) -> u -> Maybe v
